@@ -21,7 +21,7 @@ Credits:
 The current implementation is a rewrite of the initial TF/Keras port by Divam Gupta.
 """
 
-import math
+import math, os
 
 import numpy as np
 import tensorflow as tf
@@ -100,17 +100,23 @@ class StableDiffusion:
             "https://raw.githubusercontent.com/CompVis/stable-diffusion/main/LICENSE"
         )
         # Load weights
+        # Use custom dir for cache if provided
+        cache_dir = os.environ.get("KERAS_CV_CACHE_DIR")    # default to None if undefined.
+
         text_encoder_weights_fpath = keras.utils.get_file(
             origin="https://huggingface.co/fchollet/stable-diffusion/resolve/main/kcv_encoder.h5",
             file_hash="4789e63e07c0e54d6a34a29b45ce81ece27060c499a709d556c7755b42bb0dc4",
+            cache_dir=cache_dir
         )
         diffusion_model_weights_fpath = keras.utils.get_file(
             origin="https://huggingface.co/fchollet/stable-diffusion/resolve/main/kcv_diffusion_model.h5",
             file_hash="8799ff9763de13d7f30a683d653018e114ed24a6a819667da4f5ee10f9e805fe",
+            cache_dir=cache_dir
         )
         decoder_weights_fpath = keras.utils.get_file(
             origin="https://huggingface.co/fchollet/stable-diffusion/resolve/main/kcv_decoder.h5",
             file_hash="ad350a65cc8bc4a80c8103367e039a3329b4231c2469a1093869a345f55b1962",
+            cache_dir=cache_dir
         )
         self.text_encoder.load_weights(text_encoder_weights_fpath)
         self.diffusion_model.load_weights(diffusion_model_weights_fpath)
