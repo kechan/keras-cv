@@ -101,7 +101,7 @@ class StableDiffusion:
         )
         # Load weights
         # Use custom dir for cache if provided
-        cache_dir = os.environ.get("KERAS_CV_CACHE_DIR")    # default to None if undefined.
+        cache_dir = os.getenv("KERAS_CV_CACHE_DIR")    # default to None if undefined.
 
         text_encoder_weights_fpath = keras.utils.get_file(
             origin="https://huggingface.co/fchollet/stable-diffusion/resolve/main/kcv_encoder.h5",
