@@ -13,7 +13,7 @@
 # limitations under the License.
 """This code is taken nearly verbatim from https://github.com/divamgupta/stable-diffusion-tensorflow."""
 
-import gzip
+import gzip, os
 import html
 from functools import lru_cache
 
@@ -74,10 +74,13 @@ def whitespace_clean(text):
 
 class SimpleTokenizer:
     def __init__(self, bpe_path=None):
+        # Use custom dir for cache if provided
+        cache_dir = os.getenv("KERAS_CV_CACHE_DIR")    # default to None if undefined.
         bpe_path = bpe_path or keras.utils.get_file(
             "bpe_simple_vocab_16e6.txt.gz",
             "https://github.com/openai/CLIP/blob/main/clip/bpe_simple_vocab_16e6.txt.gz?raw=true",
             file_hash="924691ac288e54409236115652ad4aa250f48203de50a9e4722a6ecd48d6804a",
+            cache_dir=cache_dir
         )
         self.byte_encoder = bytes_to_unicode()
         self.byte_decoder = {v: k for k, v in self.byte_encoder.items()}
